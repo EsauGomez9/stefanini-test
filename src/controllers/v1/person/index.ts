@@ -16,6 +16,6 @@ ROUTER.route('/:personId').put(controller.updatePerson as RequestHandler)
 ROUTER.route('/:personId').delete(controller.deletePerson as RequestHandler)
 
 // Upload CSV
-ROUTER.route('/import').delete(controller.importPersons as RequestHandler)
+ROUTER.route('/import').post(controller.importPersons as RequestHandler)
 
 export default ROUTER
