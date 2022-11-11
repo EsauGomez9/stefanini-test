@@ -2,7 +2,7 @@
 node_modules
 lib
 
-#Packet handler (yarn)
+# Packet handler (yarn)
 yarn.lock
 yarn-error.log
 
@@ -12,3 +12,6 @@ yarn-error.log
 
 # IDE
 .vscode
+
+# Logical
+uploads

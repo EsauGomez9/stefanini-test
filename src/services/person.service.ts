@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client'
+import moment from 'moment'
+import { v4 as uuidv4 } from 'uuid'
 import { IsResponse } from '../interfaces/response.interface'
 import { successRequest, badRequest, notfoundRequest } from '../utils/response'
 const prisma = new PrismaClient()
@@ -29,8 +31,15 @@ async function getPersonByUUID (uuid: string): Promise<IsResponse> {
 
 async function createPerson (payload: any): Promise<IsResponse> {
   try {
+    const today = moment()
     const PERSON = await prisma.person.create({
-      data: payload
+      data: {
+        ...payload,
+        uuid: uuidv4(),
+        country_residence: payload?.country_residence.replace(' ', '_') ?? '',
+        age: Number(today.diff(moment(payload?.birth_date), 'years') ?? 0),
+        birth_date: moment(payload?.birth_date).toISOString()
+      }
     })
     return successRequest(PERSON)
   } catch (error: unknown) {
@@ -42,11 +51,17 @@ async function createPerson (payload: any): Promise<IsResponse> {
 
 async function updatePerson (uuid: string, payload: any): Promise<IsResponse> {
   try {
+    const today = moment()
     const PERSON = await prisma.person.update({
       where: {
         uuid
       },
-      data: payload
+      data: {
+        ...payload,
+        country_residence: payload?.country_residence.replace(' ', '_') ?? '',
+        age: Number(today.diff(moment(payload?.birth_date), 'years') ?? 0),
+        birth_date: moment(payload?.birth_date).toISOString()
+      }
     })
     return successRequest(PERSON)
   } catch (error: unknown) {

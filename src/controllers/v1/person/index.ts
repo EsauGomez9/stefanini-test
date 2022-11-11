@@ -1,5 +1,6 @@
 import { Router, RequestHandler } from 'express'
 import controller from './person.controller'
+import multerMiddleware from '../../../middleware/multer.middleware'
 
 const ROUTER = Router()
 
@@ -16,6 +17,6 @@ ROUTER.route('/:personId').put(controller.updatePerson as RequestHandler)
 ROUTER.route('/:personId').delete(controller.deletePerson as RequestHandler)
 
 // Upload CSV
-ROUTER.route('/import').post(controller.importPersons as RequestHandler)
+ROUTER.route('/import').post(multerMiddleware.single('file'), controller.importPersons as RequestHandler)
 
 export default ROUTER

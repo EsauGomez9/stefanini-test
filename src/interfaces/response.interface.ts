@@ -1,4 +1,4 @@
 export interface IsResponse {
   code: number
-  response: object
+  response: any
 }

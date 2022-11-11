@@ -1,6 +1,7 @@
 import { Response, Request } from 'express'
 import { IsResponse } from '../../../interfaces/response.interface'
 import personService from '../../../services/person.service'
+import personImportServ from '../../../services/person.import.service'
 
 async function getPersonList (req: Request, res: Response): Promise<Response> {
   const { code, response }: IsResponse = await personService.listPerson()
@@ -27,9 +28,11 @@ async function updatePerson ({ body, params }: Request, res: Response): Promise<
   return res.status(code).send(response)
 }
 
-async function importPersons (req: Request, res: Response): Promise<Response> {
+async function importPersons ({ file }: { file: Express.Multer.File }, res: Response): Promise<Response> {
   try {
-    return res.send('persons has been imported')
+    const FILE_NAME: string = file?.filename
+    const { code, response }: IsResponse = await personImportServ.importPersonsCSV(FILE_NAME)
+    return res.status(code).send(response)
   } catch (error: unknown) {
     return res.status(500).json({
       message: error
