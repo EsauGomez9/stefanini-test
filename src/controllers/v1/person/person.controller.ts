@@ -5,7 +5,10 @@ import personImportServ from '../../../services/person.import.service'
 
 async function getPersonList (req: Request, res: Response): Promise<Response> {
   const { code, response }: IsResponse = await personService.listPerson()
-  return res.status(code).send(response)
+  return res.status(code).send({
+    persons: response,
+    count: response?.length ?? 0
+  })
 }
 
 async function getPersonById ({ params }: Request, res: Response): Promise<Response> {

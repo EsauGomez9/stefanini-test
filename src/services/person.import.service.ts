@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import convertCsv from 'csvtojson'
 import path from 'path'
 import moment from 'moment'
+import fs from 'fs'
 import sleep from 'sleep-promise'
 import { v4 as uuidv4 } from 'uuid'
 import { IsResponse } from '../interfaces/response.interface'
@@ -26,7 +27,7 @@ async function importPersonsCSV (FILE_NAME: string): Promise<IsResponse> {
 
     while (PAGINATION.page_curr <= PAGINATION.page_limit) {
       PAGINATION.record_page = ((PAGINATION.page_curr) * 1000)
-      const RECORD_LIMIT = (PAGINATION.record_page >= PAGINATION.record_total)
+      const RECORD_LIMIT = (PAGINATION.record_page <= PAGINATION.record_total)
         ? PAGINATION.record_page
         : PAGINATION.record_total
       const CURR_PAGE_OBJ = []
@@ -46,6 +47,9 @@ async function importPersonsCSV (FILE_NAME: string): Promise<IsResponse> {
       if (code === 200) PAGINATION.records_added += Number(response.count ?? 0)
       PAGINATION.page_curr++
     }
+
+    // moving file
+    await movingTempFile(FILE_NAME)
 
     return successRequest({
       code: 200,
@@ -68,7 +72,7 @@ async function addPersonsDB (payload: any): Promise<IsResponse> {
     const PERSON_ADDED = await prisma.person.createMany({
       data: payload
     })
-    console.log(PERSON_ADDED)
+    console.log(`---> (${PERSON_ADDED.count}) records imported.`)
     return {
       code: 200,
       response: {
@@ -84,6 +88,21 @@ async function addPersonsDB (payload: any): Promise<IsResponse> {
         exeption: error
       }
     }
+  }
+}
+
+async function movingTempFile (filename: string): Promise<boolean | undefined> {
+  try {
+    const SOURCE: string = path.resolve(__dirname, `../../uploads/temp/${filename}`)
+    const TARGET: string = path.resolve(__dirname, `../../uploads/imported/${filename}`)
+
+    fs.rename(SOURCE, TARGET, (err) => {
+      if (err != null) return false
+      console.log(`---> (${filename}) file moved to imported files.`)
+      return true
+    })
+  } catch (error) {
+    return false
   }
 }
 

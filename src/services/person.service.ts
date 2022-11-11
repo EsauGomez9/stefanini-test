@@ -41,6 +41,7 @@ async function createPerson (payload: any): Promise<IsResponse> {
         birth_date: moment(payload?.birth_date).toISOString()
       }
     })
+    console.log('---> (create) record created successfully.')
     return successRequest(PERSON)
   } catch (error: unknown) {
     return badRequest()
@@ -63,6 +64,7 @@ async function updatePerson (uuid: string, payload: any): Promise<IsResponse> {
         birth_date: moment(payload?.birth_date).toISOString()
       }
     })
+    console.log('---> (update) record updated successfully.')
     return successRequest(PERSON)
   } catch (error: unknown) {
     return badRequest()
@@ -76,6 +78,7 @@ async function deletePerson (uuid: string): Promise<IsResponse> {
     const PERSON = await prisma.person.delete({
       where: { uuid }
     })
+    console.log('---> (delete) record deleted successfully.')
     return successRequest(PERSON)
   } catch (error: unknown) {
     return notfoundRequest('PERSON_NOT_FOUND')
