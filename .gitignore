@@ -3,7 +3,6 @@ node_modules
 lib
 
 # Packet handler (yarn)
-yarn.lock
 yarn-error.log
 
 # Enviroment

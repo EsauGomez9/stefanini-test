@@ -12,7 +12,7 @@ SERVER.use(cors())
 SERVER.use(controllers)
 
 SERVER.listen(PORT, IP, function (): void {
-  console.log(`Stefanini API listen on ${PORT} port. --> (${NODE_ENV})`)
+  console.log(`Ssstefanini API listen on ${PORT} port. --> (${NODE_ENV})`)
 })
 
 export default SERVER

@@ -49,10 +49,14 @@ async function importPersonsCSV (FILE_NAME: string): Promise<IsResponse> {
     }
 
     // moving file
-    await movingTempFile(FILE_NAME)
+    if (PAGINATION.records_added > 0) {
+      await movingTempFile(FILE_NAME)
+    } else {
+      await movingTempFile(FILE_NAME)
+    }
 
     return successRequest({
-      code: 200,
+      code: (PAGINATION.records_added > 0) ? 200 : 500,
       response: {
         records_recived: PERSONS_OBJECT.length,
         added_records: PAGINATION.records_added
@@ -68,7 +72,7 @@ async function importPersonsCSV (FILE_NAME: string): Promise<IsResponse> {
 
 async function addPersonsDB (payload: any): Promise<IsResponse> {
   try {
-    await sleep(100)
+    await sleep(50)
     const PERSON_ADDED = await prisma.person.createMany({
       data: payload
     })
