@@ -9,7 +9,7 @@ dotenv.config({
 function getNodeEnviroment (): string {
   const ENVIROMENT = String(process.env.NODE_ENV ?? 'development')
   if (ENVIROMENT === 'production') {
-    return '../../.env.production'
+    return '../../.production.env'
   } else {
     return '../../.env'
   }

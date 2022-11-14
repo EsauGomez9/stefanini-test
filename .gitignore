@@ -7,7 +7,8 @@ yarn-error.log
 
 # Enviroment
 .env
-.env.production
+.production.env
+.docker.env
 
 # IDE
 .vscode

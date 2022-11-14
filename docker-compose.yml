@@ -2,9 +2,9 @@ version: "3.9"
 services:
   stefanini_cont:
     build: .
-    env_file: ./.env
+    env_file: ./.docker.env
     ports:
-      - "3001:3001"
+      - "8080:8080"
     links:
       - mysql_cont
   mysql_cont:
@@ -13,6 +13,4 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_DATABASE=stefanini
-      - MYSQL_USER=stefanini_user
-      - MYSQL_PASSWORD=stefanini_456
-      - MYSQL_ROOT_PASSWORD=stefanini_pass
+      - MYSQL_ROOT_PASSWORD=stefanini_root_pass
