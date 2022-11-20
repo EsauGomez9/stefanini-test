@@ -3,7 +3,7 @@ import supertest from 'supertest'
 
 describe('Server', () => {
   describe('GET /ping', () => {
-    test('Expect a status 200', async () => {
+    test('Expect an "online" text', async () => {
       const PING = await supertest(ROUTER).get('/ping')
       expect(PING.text).toBe('online')
     })
