@@ -1,4 +1,4 @@
-import server from './express.loader'
+import server from './express'
 import { RequestHandler } from 'express'
 
 export default function (): void {
